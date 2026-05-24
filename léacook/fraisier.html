@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fraisier nuage — Léacook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .product { display: grid; gap: 32px; grid-template-columns: 1fr; }
+  @media (min-width: 1024px) { .product { grid-template-columns: 1.1fr 1fr; gap: 48px; } }
+  .gallery__main {
+    width: 100%; aspect-ratio: 1/1; object-fit: cover;
+    border-radius: 24px; border: 3px solid var(--ink); box-shadow: 0 8px 0 var(--ink);
+    background: var(--pink);
+  }
+  .gallery__thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .gallery__thumb {
+    width: 100%; aspect-ratio: 1/1; object-fit: cover;
+    border-radius: 12px; border: 2px solid var(--ink); cursor: pointer;
+  }
+  .gallery__thumb--active { border-color: var(--pink); transform: scale(1.02); }
+  .price-tag {
+    font-family: var(--font-display); font-weight: 800;
+    background: var(--ink); color: var(--lemon);
+    padding: 4px 18px; border-radius: 16px;
+    font-size: clamp(36px, 6vw, 52px); letter-spacing: -0.04em;
+  }
+  .info-table { display: grid; gap: 6px; font-size: 14px; }
+  .info-table__row {
+    display: grid; gap: 12px;
+    grid-template-columns: 120px 1fr;
+    padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.13);
+  }
+  .info-table__k { font-weight: 700; }
+  .perso-box {
+    background: var(--paper); border: 2px dashed var(--ink);
+    border-radius: 18px; padding: 18px;
+  }
+  .trust-row {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    margin-top: 24px; padding: 16px 0;
+    border-top: 1px solid rgba(0,0,0,0.13);
+    font-size: 12px; color: var(--ink-soft); font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="logo">léa<span class="dot"></span>cook</a>
+  <nav class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="carte.html" class="active">La carte</a>
+    <a href="instagram.html">Lancement IG</a>
+    <a href="index.html#sur-mesure">Sur-mesure</a>
+    <a href="index.html#lea">Léa</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <a href="commander.html" class="btn btn--pink btn--sm nav-cta">Commander ♥</a>
+  <button class="nav-burger" aria-label="Menu">☰</button>
+</header>
+
+<!-- Breadcrumb -->
+<div class="container" style="padding-top: 16px; font-size: 13px; color: var(--ink-soft);">
+  <a href="index.html" style="color: var(--ink-soft); text-decoration: none;">Accueil</a>
+  ·
+  <a href="carte.html" style="color: var(--ink-soft); text-decoration: none;">La carte</a>
+  ·
+  <span style="color: var(--ink); font-weight: 700;">Fraisier nuage</span>
+</div>
+
+<section class="section" style="padding-top: 24px;">
+  <div class="container">
+    <div class="product">
+      <!-- GALERIE -->
+      <div>
+        <div style="position: relative;">
+          <img class="gallery__main"
+               src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=900&h=900&fit=crop&q=80"
+               alt="Fraisier nuage" />
+          <div class="sticker" style="top: 16px; left: 16px; transform: rotate(-8deg);">NEW</div>
+        </div>
+        <div class="gallery__thumbs">
+          <img class="gallery__thumb gallery__thumb--active" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=300&h=300&fit=crop&q=80" alt="" />
+          <img class="gallery__thumb" src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300&h=300&fit=crop&q=80" alt="" />
+          <img class="gallery__thumb" src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=300&h=300&fit=crop&q=80" alt="" />
+          <img class="gallery__thumb" src="https://images.unsplash.com/photo-1464347744102-11db6282f854?w=300&h=300&fit=crop&q=80" alt="" />
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div>
+        <span class="pill" style="margin-bottom: 12px;">Layer cake · disponible</span>
+        <h1 class="h1" style="font-size: clamp(40px, 6vw, 64px); line-height: 0.95; margin-bottom: 12px;">
+          Fraisier nuage
+        </h1>
+        <p class="lead" style="margin-bottom: 24px;">
+          Génoise vanille bourbon ultra-moelleuse, crème diplomate fouettée minute,
+          fraises Gariguette du marché. Le grand classique, mais en mieux.
+        </p>
+
+        <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; flex-wrap: wrap;">
+          <span class="price-tag">78€</span>
+          <span style="font-size: 14px; color: var(--ink-soft);">soit ~8€/pers.</span>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label class="field-label" style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">
+            Choisis ta taille
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+            <button class="size-btn" style="padding:12px 6px;border-radius:14px;background:var(--paper);border:2px solid var(--ink);cursor:pointer;font-family:var(--font-body);">
+              <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">S</div>
+              <div style="font-size:11px;font-weight:600;">6 pers.</div>
+              <div style="font-size:13px;font-weight:700;margin-top:4px;">58€</div>
+            </button>
+            <button class="size-btn" style="padding:12px 6px;border-radius:14px;background:var(--lemon);border:2px solid var(--ink);box-shadow:0 4px 0 var(--ink);transform:translateY(-2px);cursor:pointer;font-family:var(--font-body);">
+              <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">M</div>
+              <div style="font-size:11px;font-weight:600;">8–10 pers.</div>
+              <div style="font-size:13px;font-weight:700;margin-top:4px;">78€</div>
+            </button>
+            <button class="size-btn" style="padding:12px 6px;border-radius:14px;background:var(--paper);border:2px solid var(--ink);cursor:pointer;font-family:var(--font-body);">
+              <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">L</div>
+              <div style="font-size:11px;font-weight:600;">12–15 pers.</div>
+              <div style="font-size:13px;font-weight:700;margin-top:4px;">110€</div>
+            </button>
+            <button class="size-btn" style="padding:12px 6px;border-radius:14px;background:var(--paper);border:2px solid var(--ink);cursor:pointer;font-family:var(--font-body);">
+              <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">XL</div>
+              <div style="font-size:11px;font-weight:600;">20+ pers.</div>
+              <div style="font-size:13px;font-weight:700;margin-top:4px;">180€</div>
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">Variante de saison</label>
+          <div class="chips" style="overflow-x: visible; flex-wrap: wrap;">
+            <button class="chip chip--active">Fraises Gariguette</button>
+            <button class="chip">Fraises × basilic</button>
+            <button class="chip">Fraises × pistache</button>
+            <button class="chip">Mara des bois</button>
+          </div>
+        </div>
+
+        <div class="perso-box" style="margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span style="font-size: 18px;">✨</span>
+            <strong style="font-family: var(--font-display); font-size: 17px;">Personnalise (option, +0€)</strong>
+          </div>
+          <input placeholder="Message à écrire sur le gâteau (ex: Joyeux anniv Théo !)" style="width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--ink); background: var(--cream); font-family: var(--font-body); font-size: 14px; box-sizing: border-box;" />
+          <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+            <span class="chip" style="font-size: 12px;">+ Couleur principale</span>
+            <span class="chip" style="font-size: 12px;">+ Bougies</span>
+            <span class="chip" style="font-size: 12px;">+ Topper en sucre</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="commander.html" class="btn btn--lg" style="flex: 1; min-width: 220px;">Commander · 78€ →</a>
+          <button class="btn btn--ghost btn--lg" style="padding: 16px 22px;">♥</button>
+        </div>
+
+        <div class="trust-row">
+          <span>✓ Acompte 30%</span>
+          <span>✓ Frais à la livraison</span>
+          <span>✓ Annulable J-7</span>
+          <span>✓ Devis sous 24h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--lilac">
+  <div class="container">
+    <div style="display: grid; gap: 32px; grid-template-columns: 1fr;">
+      <div>
+        <span class="pill pill--cream" style="margin-bottom: 14px;">L'histoire</span>
+        <h2 class="h2" style="font-size: clamp(28px, 4vw, 44px); margin-bottom: 18px;">
+          Le fraisier de Léa, c'est <em>sa madeleine de Proust</em>.
+        </h2>
+        <p class="lead" style="color: var(--ink); margin-bottom: 14px;">
+          C'est le gâteau que sa grand-mère faisait tous les dimanches d'été quand
+          elle était petite, à base de fraises du jardin. Léa en a gardé l'esprit,
+          et ajouté sa patte : une crème diplomate plus légère, un zeste de citron,
+          une déco minimaliste.
+        </p>
+        <p class="lead" style="color: var(--ink);">
+          Disponible toute la saison des fraises (mai → juillet), Gariguettes ou
+          Mara des Bois selon le marché.
+        </p>
+      </div>
+      <div>
+        <span class="pill pill--cream" style="margin-bottom: 14px;">Composition</span>
+        <h3 class="h3" style="margin-bottom: 16px;">Ingrédients du jour</h3>
+        <div class="info-table">
+          <div class="info-table__row"><span class="info-table__k">Génoise</span><span>farine T55, œufs fermiers, sucre, vanille bourbon Madagascar</span></div>
+          <div class="info-table__row"><span class="info-table__k">Crème diplomate</span><span>crème entière 35%, mascarpone, sucre, gélatine</span></div>
+          <div class="info-table__row"><span class="info-table__k">Fruits</span><span>fraises Gariguette IDF (selon arrivage)</span></div>
+          <div class="info-table__row"><span class="info-table__k">Déco</span><span>fleurs comestibles, sucre glace</span></div>
+          <div class="info-table__row" style="border-bottom: none;"><span class="info-table__k">Allergènes</span><span>gluten, œuf, lait · trace de fruits à coque</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    @media (min-width: 1024px) {
+      .section--lilac > .container > div { grid-template-columns: 1fr 1fr; gap: 48px; }
+    }
+  </style>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <h2 class="h2" style="font-size: clamp(28px, 5vw, 48px);">Tu vas aussi aimer ↓</h2>
+      <a href="carte.html" style="font-size: 14px; font-weight: 700; text-decoration: underline; color: var(--ink);">Voir tout le menu →</a>
+    </div>
+    <div class="grid-cakes grid-cakes--4">
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=400&fit=crop&q=80" alt="" style="background: var(--lilac);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Choco noisette</h3><span class="card__price">72€</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&h=400&fit=crop&q=80" alt="" style="background: var(--lemon);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Citron meringué</h3><span class="card__price">74€</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=400&h=400&fit=crop&q=80" alt="" style="background: var(--sky);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Number cake</h3><span class="card__price">65€</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1599785209707-a456fc1337bb?w=400&h=400&fit=crop&q=80" alt="" style="background: var(--peach);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Cupcakes</h3><span class="card__price">36€</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div class="footer__col">
+      <a class="logo" href="index.html" style="color: var(--lemon); font-size: 36px;">léa<span class="dot"></span>cook</a>
+    </div>
+    <div class="footer__col"><h4>Contact</h4><p>hello@leacook.fr</p><p>06 12 34 56 78</p></div>
+    <div class="footer__col"><h4>Liens</h4><a href="index.html">Accueil</a><a href="carte.html">Carte</a><a href="commander.html">Commander</a></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 Léacook</span><span>CGV · Mentions légales</span></div>
+</footer>
+
+<a href="specs.html" class="specs-ribbon">✦ Voir les specs</a>
+
+<script src="site.js"></script>
+</body>
+</html>

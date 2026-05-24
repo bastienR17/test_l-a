@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Plan Instagram — Léacook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* ===== Profile mock ===== */
+  .ig-frame {
+    max-width: 640px; margin: 0 auto;
+    background: var(--paper);
+    border: 2.5px solid var(--ink); border-radius: 28px;
+    box-shadow: 0 10px 0 var(--ink);
+    overflow: hidden;
+  }
+  .ig-head {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 20px; border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .ig-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink), var(--lemon));
+    padding: 3px;
+  }
+  .ig-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--paper); }
+  .ig-meta { flex: 1; }
+  .ig-handle { font-family: var(--font-display); font-weight: 800; font-size: 18px; }
+  .ig-stats { display: flex; gap: 14px; font-size: 12px; color: var(--ink-soft); margin-top: 4px; }
+  .ig-stats b { color: var(--ink); }
+  .ig-follow {
+    background: var(--pink); color: var(--cream); border: none;
+    padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px;
+    cursor: pointer;
+  }
+  .ig-bio { padding: 0 20px 16px; font-size: 13px; color: var(--ink); }
+  .ig-bio strong { font-family: var(--font-display); font-size: 15px; display: block; margin-bottom: 4px; }
+  .ig-tabs {
+    display: flex; border-top: 1px solid rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .ig-tab {
+    flex: 1; text-align: center; padding: 12px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-soft); cursor: pointer;
+  }
+  .ig-tab--active { color: var(--ink); border-top: 2px solid var(--ink); }
+
+  /* ===== Grille 9 posts ===== */
+  .ig-grid {
+    display: grid; gap: 2px;
+    grid-template-columns: repeat(3, 1fr);
+    background: rgba(0,0,0,0.08);
+  }
+  .ig-post {
+    position: relative; aspect-ratio: 1/1;
+    background: var(--ink);
+    overflow: hidden; cursor: pointer;
+  }
+  .ig-post img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+  .ig-post:hover img { transform: scale(1.04); }
+  .ig-post__icon {
+    position: absolute; top: 6px; right: 6px;
+    color: white; font-size: 16px;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  }
+  .ig-post__num {
+    position: absolute; bottom: 8px; left: 8px;
+    background: rgba(0,0,0,0.6); color: white;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 800;
+    font-family: var(--font-display);
+  }
+  .ig-post--text {
+    background: var(--pink); color: var(--cream);
+    display: grid; place-items: center; padding: 12px;
+    text-align: center;
+  }
+  .ig-post--text.ig-post--lemon { background: var(--lemon); color: var(--ink); }
+  .ig-post--text.ig-post--lilac { background: var(--lilac); color: var(--ink); }
+  .ig-post--text .ig-post__txt {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(14px, 4vw, 24px); line-height: 1; letter-spacing: -0.02em;
+  }
+
+  /* ===== Posts detail list ===== */
+  .post-card {
+    display: grid; gap: 16px;
+    grid-template-columns: 1fr;
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 20px;
+    padding: 16px; box-shadow: var(--sh-3);
+  }
+  @media (min-width: 640px) {
+    .post-card { grid-template-columns: 140px 1fr; align-items: start; }
+  }
+  .post-card__img {
+    width: 100%; aspect-ratio: 1/1; object-fit: cover;
+    border-radius: 14px; border: 1.5px solid var(--ink);
+  }
+  .post-card__head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .post-card__num {
+    background: var(--ink); color: var(--lemon);
+    width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 13px;
+  }
+  .post-card__type {
+    background: var(--lemon); padding: 3px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    border: 1.5px solid var(--ink);
+  }
+  .post-card__type--reel { background: var(--pink); color: var(--cream); }
+  .post-card__type--carousel { background: var(--sky); }
+  .post-card__date { font-size: 11px; color: var(--ink-soft); font-weight: 600; margin-left: auto; }
+  .post-card__title { font-family: var(--font-display); font-weight: 700; font-size: 22px; margin: 0 0 8px; letter-spacing: -0.02em; }
+  .post-card__caption {
+    font-size: 13px; line-height: 1.5; color: var(--ink);
+    background: var(--cream); padding: 10px 14px; border-radius: 10px;
+    border: 1px dashed var(--ink);
+  }
+  .post-card__hashtags { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+
+  /* ===== Calendrier ===== */
+  .cal {
+    display: grid; gap: 10px;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .cal__day {
+    aspect-ratio: 1/1; padding: 8px; border-radius: 12px;
+    background: var(--paper); border: 1.5px solid var(--ink);
+    display: flex; flex-direction: column;
+    font-size: 11px; color: var(--ink-soft); font-weight: 600;
+    position: relative; min-height: 80px;
+  }
+  .cal__day--post { background: var(--lemon); }
+  .cal__day--post.cal__day--reel { background: var(--pink); color: var(--cream); }
+  .cal__day--post.cal__day--carousel { background: var(--sky); }
+  .cal__num {
+    font-family: var(--font-display); font-weight: 800; font-size: 16px;
+    color: var(--ink); align-self: flex-end;
+  }
+  .cal__day--post .cal__num { color: var(--ink); }
+  .cal__day--reel .cal__num { color: var(--cream); }
+  .cal__post-id {
+    margin-top: auto;
+    font-family: var(--font-display); font-weight: 800; font-size: 14px;
+  }
+  .cal__post-label {
+    font-size: 10px; margin-top: 2px; line-height: 1.2;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+  .cal__weekdays {
+    display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 10px; margin-bottom: 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  @media (max-width: 639px) {
+    .cal__day { min-height: 60px; padding: 6px; }
+    .cal__num { font-size: 13px; }
+    .cal__post-id { font-size: 12px; }
+    .cal__post-label { display: none; }
+  }
+
+  /* Layout 2 col */
+  .ig-layout { display: grid; gap: 32px; grid-template-columns: 1fr; }
+  @media (min-width: 1024px) {
+    .ig-layout { grid-template-columns: 0.9fr 1.1fr; gap: 48px; align-items: start; }
+    .ig-frame { position: sticky; top: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="logo">léa<span class="dot"></span>cook</a>
+  <nav class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="carte.html">La carte</a>
+    <a href="commander.html">Commander</a>
+    <a href="instagram.html" class="active">Lancement IG</a>
+  </nav>
+  <a href="commander.html" class="btn btn--pink btn--sm nav-cta">Commander ♥</a>
+  <button class="nav-burger" aria-label="Menu">☰</button>
+</header>
+
+<section class="section">
+  <div class="container">
+    <span class="pill pill--pink" style="margin-bottom: 14px;">Plan de lancement</span>
+    <h1 class="h1" style="margin-bottom: 16px;">
+      9 posts <span class="hl hl--lemon">d'un coup</span> pour démarrer.
+    </h1>
+    <p class="lead">
+      La règle d'or pour lancer un compte : <strong>publier 9 posts en une seule fois</strong>
+      pour que la grille soit pleine et donne envie de suivre. Puis enchaîner avec
+      2-3 Reels making-of par semaine — c'est ton meilleur levier de croissance.
+    </p>
+  </div>
+</section>
+
+<!-- ============ APERÇU GRILLE + DÉTAIL ============ -->
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="ig-layout">
+
+      <!-- LEFT: Profile mock -->
+      <div>
+        <div class="ig-frame">
+          <div class="ig-head">
+            <div class="ig-avatar">
+              <img src="https://images.unsplash.com/photo-1607478900766-efe13248b125?w=200&h=200&fit=crop&q=80" alt="Léa" />
+            </div>
+            <div class="ig-meta">
+              <div class="ig-handle">leacook</div>
+              <div class="ig-stats">
+                <span><b>9</b> posts</span>
+                <span><b>0</b> abonnés</span>
+                <span><b>12</b> abonnements</span>
+              </div>
+            </div>
+            <button class="ig-follow">Suivre</button>
+          </div>
+          <div class="ig-bio">
+            <strong>Léa · Pâtisserie indé · Argenteuil 95</strong>
+            Layer cakes, number cakes, créations folles ✨<br />
+            Livraison 95 + agglo · Devis sous 24h<br />
+            🔗 leacook.fr
+          </div>
+          <div class="ig-tabs">
+            <div class="ig-tab ig-tab--active">▦ Posts</div>
+            <div class="ig-tab">▷ Reels</div>
+            <div class="ig-tab">⊕ Tagué</div>
+          </div>
+
+          <!-- 9 POSTS GRID -->
+          <div class="ig-grid">
+            <!-- Post 1: ANNONCE -->
+            <div class="ig-post ig-post--text">
+              <div class="ig-post__txt">leacook<br />is live ✨</div>
+              <div class="ig-post__num">1</div>
+            </div>
+            <!-- Post 2: portrait Léa -->
+            <div class="ig-post">
+              <img src="https://images.unsplash.com/photo-1607478900766-efe13248b125?w=600&h=600&fit=crop&q=80" alt="Léa" />
+              <div class="ig-post__num">2</div>
+            </div>
+            <!-- Post 3: fraisier hero -->
+            <div class="ig-post">
+              <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&h=600&fit=crop&q=80" alt="Fraisier" />
+              <div class="ig-post__num">3</div>
+            </div>
+            <!-- Post 4: making of (REEL) -->
+            <div class="ig-post">
+              <img src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=600&h=600&fit=crop&q=80" alt="Making of" />
+              <div class="ig-post__icon">▷</div>
+              <div class="ig-post__num">4</div>
+            </div>
+            <!-- Post 5: number cake -->
+            <div class="ig-post">
+              <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=600&h=600&fit=crop&q=80" alt="Number cake" />
+              <div class="ig-post__num">5</div>
+            </div>
+            <!-- Post 6: texte / phrase -->
+            <div class="ig-post ig-post--text ig-post--lemon">
+              <div class="ig-post__txt">"chaque<br />gâteau<br />= une<br />histoire"</div>
+              <div class="ig-post__num">6</div>
+            </div>
+            <!-- Post 7: choco -->
+            <div class="ig-post">
+              <img src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&h=600&fit=crop&q=80" alt="Choco" />
+              <div class="ig-post__num">7</div>
+            </div>
+            <!-- Post 8: atelier / coulisses (REEL) -->
+            <div class="ig-post">
+              <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=600&h=600&fit=crop&q=80" alt="Atelier" />
+              <div class="ig-post__icon">▷</div>
+              <div class="ig-post__num">8</div>
+            </div>
+            <!-- Post 9: cupcakes -->
+            <div class="ig-post">
+              <img src="https://images.unsplash.com/photo-1599785209707-a456fc1337bb?w=600&h=600&fit=crop&q=80" alt="Cupcakes" />
+              <div class="ig-post__num">9</div>
+            </div>
+          </div>
+        </div>
+        <p style="text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 12px;">
+          ↑ aperçu de la grille @leacook le jour J du lancement
+        </p>
+      </div>
+
+      <!-- RIGHT: Détail de chaque post -->
+      <div style="display: grid; gap: 14px;">
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://placehold.co/400x400/FF4FA3/FFF5F0/png?text=leacook%0Ais+live+%E2%9C%A8&font=roboto" alt="" style="background: var(--pink); display: flex; align-items: center; justify-content: center; color: var(--cream); font-family: var(--font-display); font-weight: 800; font-size: 28px;" onerror="this.style.display='flex'; this.alt='leacook is live ✨';" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">1</span>
+              <span class="post-card__type">Photo</span>
+              <span class="post-card__date">Lundi J · 19h</span>
+            </div>
+            <h3 class="post-card__title">L'annonce</h3>
+            <p class="post-card__caption">
+              "Salut Internet. Moi c'est Léa, je pâtisse depuis 4 ans à Argenteuil
+              et aujourd'hui je lance mon truc : <strong>leacook</strong>.
+              Layer cakes, number cakes, créations sur-mesure pour vos meilleurs jours.
+              Restez là, ça va être chouette. ✨"
+            </p>
+            <div class="post-card__hashtags">#leacook #patisserieindependante #argenteuil #valdoise95</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://images.unsplash.com/photo-1607478900766-efe13248b125?w=400&h=400&fit=crop&q=80" alt="" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">2</span>
+              <span class="post-card__type post-card__type--carousel">Carousel · 5 slides</span>
+              <span class="post-card__date">Mardi J+1 · 12h</span>
+            </div>
+            <h3 class="post-card__title">Qui est Léa ?</h3>
+            <p class="post-card__caption">
+              "Petite, je passais mes dimanches dans la cuisine de mamie.
+              Aujourd'hui, c'est mon métier. Diplômée Ferrandi, 5 ans
+              chez X, et un atelier rien qu'à moi depuis 2022.
+              Swipe pour découvrir mon parcours →"
+            </p>
+            <div class="post-card__hashtags">#patissière #ferrandi #cheffepatissiere #parcours</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=400&fit=crop&q=80" alt="" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">3</span>
+              <span class="post-card__type">Photo</span>
+              <span class="post-card__date">Mercredi J+2 · 19h</span>
+            </div>
+            <h3 class="post-card__title">Le fraisier signature</h3>
+            <p class="post-card__caption">
+              "Mon obsession du printemps : ce fraisier nuage.
+              Génoise vanille bourbon, crème diplomate, Gariguette du marché.
+              C'est <strong>78€</strong>, 8 à 10 personnes, et c'est dispo
+              maintenant 🍓 Commande en bio."
+            </p>
+            <div class="post-card__hashtags">#fraisier #layercake #gariguette #patisseriefrancaise</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=400&h=400&fit=crop&q=80" alt="" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">4</span>
+              <span class="post-card__type post-card__type--reel">▷ Reel · 22s</span>
+              <span class="post-card__date">Vendredi J+4 · 19h</span>
+            </div>
+            <h3 class="post-card__title">Making-of fraisier</h3>
+            <p class="post-card__caption">
+              "Le fraisier en 22 secondes 👀 Génoise → sirop → diplomate → fraises →
+              déco. Son audio satisfaisant garanti.<br/>
+              <em>(C'est CE genre de Reel qui va te faire grossir le compte,
+              prévois-en 1-2 par semaine.)</em>"
+            </p>
+            <div class="post-card__hashtags">#asmr #patisserie #makingof #reel #fyp</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=400&h=400&fit=crop&q=80" alt="" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">5</span>
+              <span class="post-card__type">Photo</span>
+              <span class="post-card__date">Samedi J+5 · 11h</span>
+            </div>
+            <h3 class="post-card__title">Number cake "30"</h3>
+            <p class="post-card__caption">
+              "Le number cake, le must des anniversaires.
+              Chiffre au choix, couleur au choix, à partir de <strong>65€</strong>.
+              Commande au moins 7 jours à l'avance.
+              Et oui, ça se livre dans tout le 95 🚗"
+            </p>
+            <div class="post-card__hashtags">#numbercake #anniversaire #patisseriesurmesure</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" alt="" style="background: var(--lemon); display: flex; align-items: center; justify-content: center; color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 18px; padding: 14px; text-align: center; line-height: 1.1;" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">6</span>
+              <span class="post-card__type">Citation</span>
+              <span class="post-card__date">Lundi J+7 · 12h</span>
+            </div>
+            <h3 class="post-card__title">"Chaque gâteau = une histoire"</h3>
+            <p class="post-card__caption">
+              "Manifesto post. Texte gros, fond jaune saturé.
+              'Chaque gâteau est une commande unique. On parle, on dessine,
+              on goûte, on ajuste. Pas de production en série — que du sur-mesure.'<br />
+              C'est ton manifesto, ça respire entre les visuels."
+            </p>
+            <div class="post-card__hashtags">#valeurs #faitmain #surmesure</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=400&fit=crop&q=80" alt="" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">7</span>
+              <span class="post-card__type post-card__type--carousel">Carousel · 4 slides</span>
+              <span class="post-card__date">Mercredi J+9 · 19h</span>
+            </div>
+            <h3 class="post-card__title">Choco noisette · décortiqué</h3>
+            <p class="post-card__caption">
+              "Quatre slides, quatre couches : biscuit cacao, ganache Valrhona 70%,
+              praliné maison, glaçage miroir. C'est <strong>72€</strong>.
+              Swipe pour voir l'intérieur 🍫"
+            </p>
+            <div class="post-card__hashtags">#chocolat #valrhona #praliné #layercake</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=400&h=400&fit=crop&q=80" alt="" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">8</span>
+              <span class="post-card__type post-card__type--reel">▷ Reel · 30s</span>
+              <span class="post-card__date">Vendredi J+11 · 19h</span>
+            </div>
+            <h3 class="post-card__title">Bienvenue dans mon atelier</h3>
+            <p class="post-card__caption">
+              "Petite visite guidée de l'atelier d'Argenteuil. Mon plan de travail,
+              mon four bien-aimé, mes 47 spatules, ma collection de tampons à message.
+              Tag une copine qui pâtisse 👋"
+            </p>
+            <div class="post-card__hashtags">#atelierpatisserie #behindthescenes #argenteuil</div>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <img class="post-card__img" src="https://images.unsplash.com/photo-1599785209707-a456fc1337bb?w=400&h=400&fit=crop&q=80" alt="" />
+          <div>
+            <div class="post-card__head">
+              <span class="post-card__num">9</span>
+              <span class="post-card__type">Photo</span>
+              <span class="post-car__date" style="font-size: 11px; color: var(--ink-soft); font-weight: 600; margin-left: auto;">Dimanche J+13 · 11h</span>
+            </div>
+            <h3 class="post-card__title">Cupcakes · perfect gift</h3>
+            <p class="post-card__caption">
+              "Pas envie d'un gros gâteau ? J'ai ça aussi. Boîte de 12 cupcakes,
+              6 saveurs au choix, <strong>36€</strong>.
+              Idéal pour un brunch, un anniversaire surprise,
+              ou un dimanche pluvieux à la maison ☔ Lien en bio."
+            </p>
+            <div class="post-card__hashtags">#cupcakes #cadeaugourmand #boitecadeau #gift</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CALENDRIER 2 SEMAINES ============ -->
+<section class="section section--lilac">
+  <div class="container">
+    <span class="pill pill--cream" style="margin-bottom: 14px;">Le calendrier</span>
+    <h2 class="h2" style="margin-bottom: 12px;">2 semaines pour <span class="hl hl--lemon">tout poser</span>.</h2>
+    <p class="lead" style="color: var(--ink); margin-bottom: 32px;">
+      Idéalement, tu publies les 9 posts <strong>sur 2 semaines</strong> à un rythme régulier.
+      Pas le même jour : ça te laisse le temps d'engager dans les commentaires
+      et de capter de nouveaux followers entre chaque publication.
+    </p>
+
+    <div class="cal__weekdays">
+      <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+    </div>
+
+    <div class="cal">
+      <!-- Semaine 1 -->
+      <div class="cal__day cal__day--post">
+        <span class="cal__num">15</span>
+        <span class="cal__post-id">#1</span>
+        <span class="cal__post-label">Annonce "is live"</span>
+      </div>
+      <div class="cal__day cal__day--post cal__day--carousel">
+        <span class="cal__num">16</span>
+        <span class="cal__post-id">#2</span>
+        <span class="cal__post-label">Qui est Léa</span>
+      </div>
+      <div class="cal__day cal__day--post">
+        <span class="cal__num">17</span>
+        <span class="cal__post-id">#3</span>
+        <span class="cal__post-label">Fraisier signature</span>
+      </div>
+      <div class="cal__day"><span class="cal__num">18</span></div>
+      <div class="cal__day cal__day--post cal__day--reel">
+        <span class="cal__num">19</span>
+        <span class="cal__post-id">#4</span>
+        <span class="cal__post-label">Reel making-of</span>
+      </div>
+      <div class="cal__day cal__day--post">
+        <span class="cal__num">20</span>
+        <span class="cal__post-id">#5</span>
+        <span class="cal__post-label">Number cake</span>
+      </div>
+      <div class="cal__day"><span class="cal__num">21</span></div>
+
+      <!-- Semaine 2 -->
+      <div class="cal__day cal__day--post">
+        <span class="cal__num">22</span>
+        <span class="cal__post-id">#6</span>
+        <span class="cal__post-label">Citation manifesto</span>
+      </div>
+      <div class="cal__day"><span class="cal__num">23</span></div>
+      <div class="cal__day cal__day--post cal__day--carousel">
+        <span class="cal__num">24</span>
+        <span class="cal__post-id">#7</span>
+        <span class="cal__post-label">Choco décortiqué</span>
+      </div>
+      <div class="cal__day"><span class="cal__num">25</span></div>
+      <div class="cal__day cal__day--post cal__day--reel">
+        <span class="cal__num">26</span>
+        <span class="cal__post-id">#8</span>
+        <span class="cal__post-label">Reel atelier</span>
+      </div>
+      <div class="cal__day"><span class="cal__num">27</span></div>
+      <div class="cal__day cal__day--post">
+        <span class="cal__num">28</span>
+        <span class="cal__post-id">#9</span>
+        <span class="cal__post-label">Cupcakes CTA</span>
+      </div>
+    </div>
+
+    <!-- Légende -->
+    <div style="display: flex; gap: 18px; flex-wrap: wrap; margin-top: 24px; font-size: 13px; font-weight: 600;">
+      <span style="display: inline-flex; align-items: center; gap: 8px;">
+        <span style="width: 16px; height: 16px; border-radius: 4px; background: var(--lemon); border: 1px solid var(--ink);"></span> Photo
+      </span>
+      <span style="display: inline-flex; align-items: center; gap: 8px;">
+        <span style="width: 16px; height: 16px; border-radius: 4px; background: var(--sky); border: 1px solid var(--ink);"></span> Carousel
+      </span>
+      <span style="display: inline-flex; align-items: center; gap: 8px;">
+        <span style="width: 16px; height: 16px; border-radius: 4px; background: var(--pink); border: 1px solid var(--ink);"></span> Reel
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIPS ============ -->
+<section class="section">
+  <div class="container">
+    <h2 class="h2" style="margin-bottom: 40px;">Les règles d'or 🎯</h2>
+    <div style="display: grid; gap: 18px; grid-template-columns: 1fr;">
+      <div style="display: grid; gap: 18px; grid-template-columns: 1fr;">
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step__num">A</div>
+        <h3 class="step__title">9 d'un coup</h3>
+        <p class="step__desc">
+          Personne ne suit un compte avec 1 seul post. Publie les 9 en 1 jour
+          (programmation via Meta Business Suite), puis enchaîne au rythme du calendrier.
+        </p>
+      </div>
+      <div class="step step--lemon">
+        <div class="step__num">B</div>
+        <h3 class="step__title">Reels &gt; Photos</h3>
+        <p class="step__desc">
+          90% de la croissance vient des Reels. Vise 2-3 making-of par semaine.
+          Format vertical 9:16, son du moment, 15-30s max.
+        </p>
+      </div>
+      <div class="step step--sky">
+        <div class="step__num">C</div>
+        <h3 class="step__title">Réponds vite</h3>
+        <p class="step__desc">
+          Tous les commentaires dans l'heure les 48h post-publication.
+          Les DMs aussi. L'algo aime ça, et les gens aussi.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <div class="cta-band__grid">
+        <div>
+          <h2 class="h2" style="margin-bottom: 16px;">
+            Prête à <span class="hl hl--lemon" style="color: var(--ink);">tout poster</span> ?
+          </h2>
+          <p class="lead" style="color: var(--cream); margin-bottom: 24px;">
+            Capture les 9 visuels en une bonne demi-journée d'atelier (lumière naturelle, fond cream),
+            programme tout sur Meta Business Suite, et c'est parti.
+          </p>
+          <a href="#" class="btn btn--lemon">Télécharger le brief PDF →</a>
+        </div>
+        <div style="font-family: var(--font-display); font-size: clamp(48px, 8vw, 96px); font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; text-align: right; color: var(--lemon);">
+          9<br/>posts.<br/>2 sem.<br/>let's go.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div class="footer__col">
+      <a class="logo" href="index.html" style="color: var(--lemon); font-size: 36px;">léa<span class="dot"></span>cook</a>
+    </div>
+    <div class="footer__col"><h4>Liens</h4><a href="index.html">Accueil</a><a href="carte.html">Carte</a><a href="commander.html">Commander</a></div>
+    <div class="footer__col"><h4>Contact</h4><p>hello@leacook.fr</p><p>06 12 34 56 78</p></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 Léacook</span><span>CGV · Mentions légales</span></div>
+</footer>
+
+<a href="specs.html" class="specs-ribbon">✦ Voir les specs</a>
+
+<script src="site.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Léacook — Specs (canvas)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Space+Grotesk:wght@500;700&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  /* Palette — CSS variables (mutées par le tweaks panel) */
+  :root {
+    --pink:    #FF4FA3;
+    --lilac:   #A88BFF;
+    --lemon:   #FFE14F;
+    --sky:     #6FC1FF;
+    --mint:    #7FE5C5;
+    --peach:   #FFB89A;
+    --cream:   #FFF5F0;
+    --paper:   #FFFBF7;
+    --ink:     #15121F;
+    --inkSoft: #5A5468;
+  }
+
+  html, body { margin: 0; padding: 0; background: #f0eee9; }
+  body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  #root { width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="bonbon-shared.jsx"></script>
+<script type="text/babel" src="bonbon-home.jsx"></script>
+<script type="text/babel" src="bonbon-carte.jsx"></script>
+<script type="text/babel" src="bonbon-detail.jsx"></script>
+<script type="text/babel" src="bonbon-order.jsx"></script>
+<script type="text/babel" src="bonbon-mobile.jsx"></script>
+
+<script type="text/babel">
+// Presets de palettes (chaque tableau = [pink, lilac, lemon, sky, mint, peach])
+const PALETTES = {
+  'Bonbon (original)': ['#FF4FA3', '#A88BFF', '#FFE14F', '#6FC1FF', '#7FE5C5', '#FFB89A'],
+  'Sorbet':            ['#FF8AB8', '#C9A9FF', '#FFEC8C', '#9DD6FF', '#A8EFD3', '#FFCDB0'],
+  'Néon pop':          ['#FF1F8F', '#7A4AFF', '#F5FF3D', '#3DB8FF', '#3DFFAE', '#FF8C5A'],
+  'Saturé':            ['#E83D8F', '#8A6BFF', '#FFD428', '#4FB0FF', '#54D9B0', '#FFA17F'],
+  'Pastel ultra':      ['#FFB0D5', '#D5C5FF', '#FFF1A8', '#B6E0FF', '#C5F2E0', '#FFD9C5'],
+};
+
+const FONT_PAIRS = {
+  'Funnel + Jakarta':       ["'Funnel Display'",       "'Plus Jakarta Sans'"],
+  'Bricolage + DM Sans':    ["'Bricolage Grotesque'",  "'DM Sans'"],
+  'Instrument + Space':     ["'Instrument Serif'",     "'Space Grotesk'"],
+};
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": ["#FF4FA3", "#A88BFF", "#FFE14F", "#6FC1FF", "#7FE5C5", "#FFB89A"],
+  "paletteName": "Bonbon (original)",
+  "fontPair": "Funnel + Jakarta",
+  "ink": "#15121F"
+}/*EDITMODE-END*/;
+
+function applyTweaks(t) {
+  const root = document.documentElement;
+  const [pink, lilac, lemon, sky, mint, peach] = t.palette;
+  root.style.setProperty('--pink', pink);
+  root.style.setProperty('--lilac', lilac);
+  root.style.setProperty('--lemon', lemon);
+  root.style.setProperty('--sky', sky);
+  root.style.setProperty('--mint', mint);
+  root.style.setProperty('--peach', peach);
+  root.style.setProperty('--ink', t.ink);
+}
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  // Apply CSS vars whenever tweaks change
+  React.useEffect(() => { applyTweaks(t); }, [t]);
+
+  // Hot-swap fontFamily via CSS attribute selectors (override inline styles)
+  React.useEffect(() => {
+    let style = document.getElementById('__tweak-fonts');
+    if (!style) {
+      style = document.createElement('style');
+      style.id = '__tweak-fonts';
+      document.head.appendChild(style);
+    }
+    const [display, body] = FONT_PAIRS[t.fontPair] || FONT_PAIRS['Funnel + Jakarta'];
+    style.textContent = `
+      [style*="Funnel Display"], [style*="Bricolage Grotesque"], [style*="Instrument Serif"] {
+        font-family: ${display}, system-ui, sans-serif !important;
+      }
+      [style*="Plus Jakarta Sans"], [style*="DM Sans"], [style*="Space Grotesk"] {
+        font-family: ${body}, system-ui, sans-serif !important;
+      }
+    `;
+  }, [t.fontPair]);
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection
+          id="desktop"
+          title="Site complet — desktop"
+          subtitle="4 pages clés du parcours utilisateur. Le panneau Tweaks (en bas à droite) change palette, radius et fonts en live."
+        >
+          <DCArtboard id="home"   label="01 · Accueil"        width={1280} height={5500}>
+            <BonbonHome />
+          </DCArtboard>
+          <DCArtboard id="carte"  label="02 · La carte"       width={1280} height={2900}>
+            <BonbonCarte />
+          </DCArtboard>
+          <DCArtboard id="detail" label="03 · Détail gâteau"  width={1280} height={2500}>
+            <BonbonDetail />
+          </DCArtboard>
+          <DCArtboard id="order"  label="04 · Commander"      width={1280} height={2000}>
+            <BonbonOrder />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection
+          id="mobile"
+          title="Site complet — mobile (390px)"
+          subtitle="Mêmes pages, version smartphone"
+        >
+          <DCArtboard id="m-home"  label="01 · Accueil"     width={390} height={2700}>
+            <BonbonHomeMobile />
+          </DCArtboard>
+          <DCArtboard id="m-carte" label="02 · La carte"    width={390} height={1480}>
+            <BonbonCarteMobile />
+          </DCArtboard>
+          <DCArtboard id="m-order" label="03 · Commander"   width={390} height={1100}>
+            <BonbonOrderMobile />
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Palette" />
+        <TweakColor
+          label="Set de couleurs"
+          value={t.palette}
+          options={Object.values(PALETTES)}
+          onChange={(v) => {
+            const name = Object.keys(PALETTES).find(k => PALETTES[k] === v) || 'custom';
+            setTweak({ palette: v, paletteName: name });
+          }}
+        />
+        <TweakColor
+          label="Couleur d'accent"
+          value={t.palette[0]}
+          options={['#FF4FA3', '#E83D8F', '#7A4AFF', '#3DFFAE', '#FFE14F']}
+          onChange={(v) => setTweak({ palette: [v, ...t.palette.slice(1)] })}
+        />
+        <TweakColor
+          label="Texte principal"
+          value={t.ink}
+          options={['#15121F', '#000000', '#2C1810', '#1A1A2E']}
+          onChange={(v) => setTweak('ink', v)}
+        />
+
+        <TweakSection label="Typographie" />
+        <TweakSelect
+          label="Paire de fonts"
+          value={t.fontPair}
+          options={Object.keys(FONT_PAIRS)}
+          onChange={(v) => setTweak('fontPair', v)}
+        />
+
+        <TweakSection label="Reset" />
+        <TweakButton
+          label="↺ Revenir au défaut"
+          onClick={() => {
+            Object.keys(TWEAK_DEFAULTS).forEach(k => setTweak(k, TWEAK_DEFAULTS[k]));
+          }}
+        />
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
