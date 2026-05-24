@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>La carte — Léacook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <a href="index.html" class="logo">léa<span class="dot"></span>cook</a>
+  <nav class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="carte.html" class="active">La carte</a>
+    <a href="index.html#sur-mesure">Sur-mesure</a>
+    <a href="index.html#lea">Léa</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <a href="commander.html" class="btn btn--pink btn--sm nav-cta">Commander ♥</a>
+  <button class="nav-burger" aria-label="Menu">☰</button>
+</header>
+
+<section class="section" style="padding-bottom: 24px;">
+  <div class="container">
+    <span class="pill pill--lilac" style="margin-bottom: 16px;">Saison printemps 2026</span>
+    <h1 class="h1" style="margin-bottom: 16px;">
+      Tous les <span class="hl hl--lemon">gâteaux</span>.
+    </h1>
+    <p class="lead">
+      La carte évolue avec les saisons et les fruits du moment.
+      Tout est sur commande, 7 jours à l'avance minimum.
+    </p>
+  </div>
+</section>
+
+<div style="position: sticky; top: 74px; z-index: 40; background: var(--cream); padding: 8px 0;">
+  <div class="container">
+    <div class="chips">
+      <button class="chip chip--active">Tous</button>
+      <button class="chip">Layer cakes</button>
+      <button class="chip">Number cakes</button>
+      <button class="chip">Cupcakes</button>
+      <button class="chip">Wedding</button>
+      <button class="chip">Sans gluten</button>
+    </div>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 24px;">
+  <div class="container">
+    <div class="grid-cakes grid-cakes--4">
+      <article class="card">
+        <span class="badge">NEW</span>
+        <img class="card__photo" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&h=600&fit=crop&q=80" alt="Fraisier" style="background: var(--pink);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Fraisier nuage</h3><span class="card__price">78€</span></div>
+          <p class="card__desc">vanille bourbon · fraises Gariguette</p>
+          <div class="card__meta"><span>🍰 8–10 pers.</span><a href="fraisier.html" style="color: var(--ink); text-decoration: underline;">Voir →</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&h=600&fit=crop&q=80" alt="Choco noisette" style="background: var(--lilac);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Choco noisette</h3><span class="card__price">72€</span></div>
+          <p class="card__desc">Valrhona 70 · praliné maison</p>
+          <div class="card__meta"><span>🍰 8–10 pers.</span><span>Voir →</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&h=600&fit=crop&q=80" alt="Citron meringué" style="background: var(--lemon);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Citron meringué XL</h3><span class="card__price">74€</span></div>
+          <p class="card__desc">lemon curd · meringue brûlée</p>
+          <div class="card__meta"><span>🍰 8–10 pers.</span><span>Voir →</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="badge badge--pink">POPULAIRE</span>
+        <img class="card__photo" src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=600&h=600&fit=crop&q=80" alt="Number cake" style="background: var(--sky);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Number cake</h3><span class="card__price">65€</span></div>
+          <p class="card__desc">chiffre au choix</p>
+          <div class="card__meta"><span>🍰 8 pers.</span><span>Voir →</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=600&h=600&fit=crop&q=80" alt="Wedding cake" style="background: var(--mint);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Wedding cake</h3><span class="card__price">320€</span></div>
+          <p class="card__desc">3 étages · sur devis</p>
+          <div class="card__meta"><span>🍰 40+ pers.</span><span>Voir →</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1599785209707-a456fc1337bb?w=600&h=600&fit=crop&q=80" alt="Cupcakes" style="background: var(--peach);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Cupcakes</h3><span class="card__price">36€</span></div>
+          <p class="card__desc">la douzaine · 6 saveurs</p>
+          <div class="card__meta"><span>🍰 12 pièces</span><span>Voir →</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1464347744102-11db6282f854?w=600&h=600&fit=crop&q=80" alt="Rainbow cake" style="background: var(--pink);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Rainbow cake</h3><span class="card__price">82€</span></div>
+          <p class="card__desc">6 couches arc-en-ciel · vanille</p>
+          <div class="card__meta"><span>🍰 10 pers.</span><span>Voir →</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="card__photo" src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=600&fit=crop&q=80" alt="Matcha framboise" style="background: var(--mint);" />
+        <div class="card__body">
+          <div class="card__title-row"><h3 class="card__title">Matcha framboise</h3><span class="card__price">76€</span></div>
+          <p class="card__desc">biscuit matcha · ganache framboise</p>
+          <div class="card__meta"><span>🍰 8–10 pers.</span><span>Voir →</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-band">
+      <div class="sticker no-mobile" style="top: 20px; right: 40px; transform: rotate(10deg);">devis<br />gratuit</div>
+      <div class="cta-band__grid">
+        <div>
+          <span class="pill pill--cream" style="margin-bottom: 14px;">Sur-mesure</span>
+          <h2 class="h2" style="margin-bottom: 20px;">
+            Tu as une idée<br />
+            <span class="hl hl--lemon" style="color: var(--ink);">complètement folle</span> ?
+          </h2>
+          <p class="lead" style="color: var(--cream); margin-bottom: 28px;">
+            Anniversaire surprise, mariage, EVJF, baby shower, lancement de marque…
+            Je conçois ton gâteau de A à Z. Couleurs, formes, parfums, message.
+          </p>
+          <div class="flex gap-3" style="flex-wrap: wrap;">
+            <a href="commander.html" class="btn btn--lemon">Demander un devis →</a>
+            <a href="#" class="btn btn--ghost" style="color: var(--cream); border-color: var(--cream);">Voir des exemples</a>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <img src="https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=400&h=400&fit=crop&q=80" alt="" style="width:100%; aspect-ratio:1/1; border-radius:18px; object-fit:cover;" />
+          <img src="https://images.unsplash.com/photo-1464347744102-11db6282f854?w=400&h=400&fit=crop&q=80" alt="" style="width:100%; aspect-ratio:1/1; border-radius:18px; object-fit:cover;" />
+          <img src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=400&h=400&fit=crop&q=80" alt="" style="width:100%; aspect-ratio:1/1; border-radius:18px; object-fit:cover;" />
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop&q=80" alt="" style="width:100%; aspect-ratio:1/1; border-radius:18px; object-fit:cover;" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <span class="pill pill--mint" style="margin-bottom: 14px;">FAQ</span>
+    <h2 class="h2" style="margin-bottom: 40px;">Les questions qui reviennent</h2>
+    <div class="faq">
+      <details class="faq__item" open>
+        <summary class="faq__q">Combien de temps à l'avance je dois commander ?</summary>
+        <p class="faq__a">7 jours minimum pour la carte. Pour le sur-mesure et les wedding cakes, compte 3 à 6 semaines.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Vous livrez où exactement ?</summary>
+        <p class="faq__a">Tout le Val d'Oise (95) et la petite couronne nord (Saint-Denis, Asnières, Gennevilliers). Livraison à partir de 8€ selon la distance.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Vous faites du sans gluten ?</summary>
+        <p class="faq__a">Oui, sur demande, avec un supplément de 8€. Mention "atelier non certifié sans allergènes" — je travaille avec de la farine dans le même espace.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">Comment se passe le paiement ?</summary>
+        <p class="faq__a">Acompte de 30% à la commande, solde à la livraison. CB, virement ou espèces.</p>
+      </details>
+      <details class="faq__item">
+        <summary class="faq__q">On peut goûter avant de commander ?</summary>
+        <p class="faq__a">Pour les wedding cakes uniquement, sur rendez-vous à l'atelier d'Argenteuil.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div class="footer__col">
+      <a class="logo" href="index.html" style="color: var(--lemon); font-size: 36px;">léa<span class="dot"></span>cook</a>
+      <p style="margin-top: 12px; max-width: 280px;">Pâtisserie indépendante installée à Argenteuil (95).</p>
+    </div>
+    <div class="footer__col"><h4>Navigation</h4>
+      <a href="index.html">Accueil</a><a href="carte.html">La carte</a><a href="commander.html">Commander</a>
+    </div>
+    <div class="footer__col"><h4>Contact</h4>
+      <p>hello@leacook.fr</p><p>06 12 34 56 78</p><p>Argenteuil · 95100</p>
+    </div>
+    <div class="footer__col"><h4>Suivre</h4>
+      <a href="#">Instagram</a><a href="#">TikTok</a><a href="#">Pinterest</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Léacook</span>
+    <span>CGV · Mentions légales</span>
+  </div>
+</footer>
+
+<a href="specs.html" class="specs-ribbon">✦ Voir les specs</a>
+
+</body>
+</html>

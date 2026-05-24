@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Commander — Léacook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .order-grid { display: grid; gap: 24px; grid-template-columns: 1fr; }
+  @media (min-width: 1024px) {
+    .order-grid { grid-template-columns: 1.6fr 1fr; gap: 32px; }
+    .order-summary { position: sticky; top: 90px; align-self: flex-start; }
+  }
+  .order-block {
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 20px;
+    padding: 20px; box-shadow: var(--sh-3);
+  }
+  @media (min-width: 640px) { .order-block { padding: 28px; border-radius: 24px; } }
+  .order-block__head {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+  }
+  .order-block__step {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--lemon); border: 2px solid var(--ink);
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 800;
+  }
+  .progress {
+    display: grid; gap: 8px; grid-template-columns: repeat(4, 1fr);
+    margin-top: 28px;
+  }
+  .progress__step {
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 999px;
+    padding: 10px 14px; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .progress__step--done { background: var(--mint); }
+  .progress__step--active { background: var(--lemon); box-shadow: var(--sh-2); transform: translateY(-2px); }
+  .progress__num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--ink); color: var(--cream);
+    display: grid; place-items: center; font-size: 11px; flex-shrink: 0;
+  }
+  @media (max-width: 639px) {
+    .progress { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .progress__step { padding: 8px; justify-content: center; font-size: 0; }
+    .progress__num { font-size: 12px; }
+  }
+  .cake-select {
+    display: grid; gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 640px) { .cake-select { grid-template-columns: repeat(3, 1fr); } }
+  .cake-select__item {
+    position: relative; background: var(--cream);
+    border: 2px solid var(--ink); border-radius: 14px;
+    overflow: hidden; cursor: pointer;
+  }
+  .cake-select__item--active {
+    border-color: var(--pink); box-shadow: 0 4px 0 var(--pink); transform: translateY(-2px);
+  }
+  .cake-select__check {
+    position: absolute; top: 8px; right: 8px; z-index: 2;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--pink); color: var(--cream);
+    display: grid; place-items: center;
+    font-size: 13px; font-weight: 800; border: 2px solid var(--ink);
+  }
+  .cake-select__img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .cake-select__body { padding: 8px 10px; }
+  .cake-select__title { font-family: var(--font-display); font-weight: 700; font-size: 14px; }
+  .cake-select__price { font-size: 11px; color: var(--ink-soft); }
+  .size-grid { display: grid; gap: 8px; grid-template-columns: repeat(4, 1fr); }
+  .size-btn {
+    padding: 12px 6px; border-radius: 14px;
+    background: var(--cream); border: 2px solid var(--ink);
+    cursor: pointer; font-family: var(--font-body);
+  }
+  .size-btn--active { background: var(--lemon); box-shadow: 0 4px 0 var(--ink); transform: translateY(-2px); }
+  .size-btn__id { font-family: var(--font-display); font-size: 18px; font-weight: 800; }
+  .size-btn__l  { font-size: 11px; font-weight: 600; margin-top: 2px; }
+  .size-btn__p  { font-size: 13px; font-weight: 700; margin-top: 4px; }
+  .field-input, .field-select {
+    width: 100%; padding: 12px 14px; border-radius: 14px;
+    border: 1.5px solid var(--ink); background: var(--cream);
+    font-family: var(--font-body); font-size: 14px; color: var(--ink);
+    box-sizing: border-box;
+  }
+  .field-label {
+    display: block; font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .swatch-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .swatch {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 2px solid var(--ink); cursor: pointer;
+  }
+  .swatch--active { box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px var(--ink); }
+  .file-drop {
+    border: 2px dashed var(--ink); border-radius: 16px;
+    padding: 20px; text-align: center; background: var(--cream);
+    cursor: pointer; font-size: 14px; color: var(--ink-soft);
+  }
+  .summary {
+    background: var(--lilac); border: 2.5px solid var(--ink); border-radius: 28px;
+    padding: 22px; box-shadow: var(--sh-4);
+  }
+  .summary__photo { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 16px; border: 2px solid var(--ink); }
+  .summary__row {
+    display: flex; justify-content: space-between; gap: 8px;
+    padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.13);
+    font-size: 13px;
+  }
+  .summary__total-box {
+    margin-top: 18px; padding: 16px;
+    background: var(--cream); border-radius: 18px; border: 2px solid var(--ink);
+  }
+  .summary__total {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-top: 10px; border-top: 1.5px dashed var(--ink);
+  }
+  .bottom-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap; margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" style="border-bottom: 1.5px solid var(--ink);">
+  <a href="index.html" class="logo">léa<span class="dot"></span>cook</a>
+  <span style="font-size: 13px; color: var(--ink-soft);">
+    Besoin d'aide ? <strong style="color: var(--ink);">06 12 34 56 78</strong>
+  </span>
+</header>
+
+<section class="section" style="padding: 32px 0 16px;">
+  <div class="container">
+    <span class="pill pill--lemon" style="margin-bottom: 10px;">Étape 2 / 4 · Détails du gâteau</span>
+    <h1 class="h1" style="font-size: clamp(40px, 7vw, 80px);">
+      On <span class="hl hl--pink">configure</span> ton gâteau.
+    </h1>
+    <div class="progress">
+      <div class="progress__step progress__step--done">
+        <span class="progress__num">✓</span>L'occasion
+      </div>
+      <div class="progress__step progress__step--active">
+        <span class="progress__num">2</span>Le gâteau
+      </div>
+      <div class="progress__step">
+        <span class="progress__num">3</span>Livraison
+      </div>
+      <div class="progress__step">
+        <span class="progress__num">4</span>Coordonnées
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="order-grid">
+
+      <!-- FORMULAIRE -->
+      <div style="display: grid; gap: 18px;">
+        <!-- A. Type -->
+        <div class="order-block">
+          <div class="order-block__head">
+            <div class="order-block__step">A</div>
+            <h2 class="h3">Quel type de gâteau ?</h2>
+          </div>
+          <div class="cake-select">
+            <div class="cake-select__item cake-select__item--active">
+              <span class="cake-select__check">✓</span>
+              <img class="cake-select__img" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop&q=80" alt="" />
+              <div class="cake-select__body">
+                <div class="cake-select__title">Fraisier nuage</div>
+                <div class="cake-select__price">à partir de 78€</div>
+              </div>
+            </div>
+            <div class="cake-select__item">
+              <img class="cake-select__img" src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=300&fit=crop&q=80" alt="" />
+              <div class="cake-select__body">
+                <div class="cake-select__title">Choco noisette</div>
+                <div class="cake-select__price">à partir de 72€</div>
+              </div>
+            </div>
+            <div class="cake-select__item">
+              <img class="cake-select__img" src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&h=300&fit=crop&q=80" alt="" />
+              <div class="cake-select__body">
+                <div class="cake-select__title">Citron meringué</div>
+                <div class="cake-select__price">à partir de 74€</div>
+              </div>
+            </div>
+            <div class="cake-select__item">
+              <img class="cake-select__img" src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=400&h=300&fit=crop&q=80" alt="" />
+              <div class="cake-select__body">
+                <div class="cake-select__title">Number cake</div>
+                <div class="cake-select__price">à partir de 65€</div>
+              </div>
+            </div>
+            <div class="cake-select__item">
+              <img class="cake-select__img" src="https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=400&h=300&fit=crop&q=80" alt="" />
+              <div class="cake-select__body">
+                <div class="cake-select__title">Wedding cake</div>
+                <div class="cake-select__price">à partir de 320€</div>
+              </div>
+            </div>
+            <div class="cake-select__item">
+              <img class="cake-select__img" src="https://images.unsplash.com/photo-1599785209707-a456fc1337bb?w=400&h=300&fit=crop&q=80" alt="" />
+              <div class="cake-select__body">
+                <div class="cake-select__title">Cupcakes</div>
+                <div class="cake-select__price">à partir de 36€</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- B. Taille + parfum -->
+        <div class="order-block">
+          <div class="order-block__head">
+            <div class="order-block__step">B</div>
+            <h2 class="h3">Taille &amp; parfum</h2>
+          </div>
+          <label class="field-label">Combien de personnes ?</label>
+          <div class="size-grid" style="margin-bottom: 20px;">
+            <button class="size-btn">
+              <div class="size-btn__id">S</div><div class="size-btn__l">6 pers.</div><div class="size-btn__p">58€</div>
+            </button>
+            <button class="size-btn size-btn--active">
+              <div class="size-btn__id">M</div><div class="size-btn__l">8–10 pers.</div><div class="size-btn__p">78€</div>
+            </button>
+            <button class="size-btn">
+              <div class="size-btn__id">L</div><div class="size-btn__l">12–15 pers.</div><div class="size-btn__p">110€</div>
+            </button>
+            <button class="size-btn">
+              <div class="size-btn__id">XL</div><div class="size-btn__l">20+ pers.</div><div class="size-btn__p">180€</div>
+            </button>
+          </div>
+
+          <label class="field-label">Variante de saison</label>
+          <div class="chips" style="overflow-x: visible; flex-wrap: wrap;">
+            <button class="chip chip--active">Fraises Gariguette</button>
+            <button class="chip">Fraises × basilic</button>
+            <button class="chip">Fraises × pistache</button>
+            <button class="chip">Mara des bois</button>
+          </div>
+        </div>
+
+        <!-- C. Personnalisation -->
+        <div class="order-block">
+          <div class="order-block__head">
+            <div class="order-block__step">C</div>
+            <h2 class="h3">Personnalisation ✨</h2>
+            <span class="pill" style="margin-left: auto;">optionnel</span>
+          </div>
+          <div style="margin-bottom: 18px;">
+            <label class="field-label">Message à écrire sur le gâteau</label>
+            <input class="field-input" value="Joyeux anniv Théo !" />
+            <div style="font-size: 11px; color: var(--ink-soft); margin-top: 6px;">30 caractères max · pâte d'amande blanche</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 14px;">
+            <div>
+              <label class="field-label">Couleur dominante</label>
+              <div class="swatch-row">
+                <div class="swatch swatch--active" style="background: var(--pink);"></div>
+                <div class="swatch" style="background: var(--lilac);"></div>
+                <div class="swatch" style="background: var(--lemon);"></div>
+                <div class="swatch" style="background: var(--sky);"></div>
+                <div class="swatch" style="background: var(--mint);"></div>
+                <div class="swatch" style="background: var(--peach);"></div>
+                <div class="swatch" style="background: var(--cream);"></div>
+              </div>
+            </div>
+            <div>
+              <label class="field-label">Bougies</label>
+              <select class="field-select">
+                <option>Sans bougie</option>
+                <option>5 bougies dorées</option>
+                <option>1 bougie chiffre "30"</option>
+                <option>Bougie magique</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top: 18px;">
+            <label class="field-label">Une photo d'inspiration ? (option)</label>
+            <div class="file-drop">
+              <div style="font-size: 22px; margin-bottom: 6px;">📎</div>
+              Glisse une photo Pinterest ici · ou clique pour parcourir
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-bar">
+          <a href="index.html" class="btn btn--ghost">← Étape précédente</a>
+          <a href="#" class="btn btn--lg">Continuer · Livraison →</a>
+        </div>
+      </div>
+
+      <!-- RÉCAP -->
+      <aside class="order-summary">
+        <div class="summary">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h3 style="font-family: var(--font-display); font-weight: 800; font-size: 22px; margin: 0;">
+              Ta commande
+            </h3>
+            <div class="sticker" style="position: static; width: 56px; height: 56px; font-size: 10px; box-shadow: 0 3px 0 var(--ink);">récap</div>
+          </div>
+          <img class="summary__photo" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&h=400&fit=crop&q=80" alt="" style="margin-bottom: 14px;" />
+          <div class="summary__row"><span style="opacity: 0.7;">Gâteau</span><strong>Fraisier nuage</strong></div>
+          <div class="summary__row"><span style="opacity: 0.7;">Taille</span><strong>M · 8–10 pers.</strong></div>
+          <div class="summary__row"><span style="opacity: 0.7;">Parfum</span><strong>Fraises Gariguette</strong></div>
+          <div class="summary__row"><span style="opacity: 0.7;">Message</span><strong style="text-align: right;">"Joyeux anniv Théo !"</strong></div>
+          <div class="summary__row"><span style="opacity: 0.7;">Couleur</span><strong>Rose ●</strong></div>
+          <div class="summary__row"><span style="opacity: 0.7;">Date</span><strong>Sam. 6 juin · à confirmer</strong></div>
+
+          <div class="summary__total-box">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;"><span>Gâteau</span><span>78,00€</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;"><span>Personnalisation</span><span>0,00€</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; color: var(--ink-soft);"><span>Livraison</span><em>à l'étape 3</em></div>
+            <div class="summary__total">
+              <span style="font-family: var(--font-display); font-size: 18px; font-weight: 800;">Total estimé</span>
+              <span style="font-family: var(--font-display); font-weight: 800; font-size: 28px;">78€</span>
+            </div>
+            <div style="font-size: 11px; color: var(--ink-soft); margin-top: 6px; text-align: right;">
+              Acompte 30% = 23,40€ à la confirmation
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; font-size: 12px; opacity: 0.8; background: var(--cream); padding: 10px 14px; border-radius: 12px; border: 1px dashed var(--ink); text-align: center;">
+            ⏱ Léa confirme ta commande sous 24h. Aucun paiement maintenant.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" style="--marquee-bg: var(--ink);">
+  <div class="marquee__track">
+    <span><span>DEVIS SOUS 24H</span><span class="star">★</span><span>ACOMPTE 30%</span><span class="star">★</span><span>ANNULABLE J-7</span><span class="star">★</span></span>
+    <span aria-hidden="true"><span>DEVIS SOUS 24H</span><span class="star">★</span><span>ACOMPTE 30%</span><span class="star">★</span><span>ANNULABLE J-7</span><span class="star">★</span></span>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div class="footer__col">
+      <a class="logo" href="index.html" style="color: var(--lemon); font-size: 36px;">léa<span class="dot"></span>cook</a>
+    </div>
+    <div class="footer__col"><h4>Contact</h4><p>hello@leacook.fr</p><p>06 12 34 56 78</p></div>
+    <div class="footer__col"><h4>Liens</h4><a href="index.html">Accueil</a><a href="carte.html">Carte</a></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 Léacook</span><span>CGV · Mentions légales</span></div>
+</footer>
+
+<a href="specs.html" class="specs-ribbon">✦ Voir les specs</a>
+
+</body>
+</html>
